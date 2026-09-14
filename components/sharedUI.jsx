@@ -9,3 +9,7 @@ export function ErrorMessage({ message }) {
     </p>
   );
 }
+
+export function Main({ children }) {
+  return <main className="main">{children}</main>;
+}

@@ -1,5 +1,5 @@
 import StarRating from "../StarRating";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Loader, ErrorMessage } from "./sharedUI";
 
 const KEY = import.meta.env.VITE_OMDB_KEY;
@@ -13,6 +13,16 @@ export default function MovieDetails({
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setUserRating] = useState("");
+
+  const countRef = useRef(0);
+  //ref's persist throughout renders, normal variables are reset on rerender
+
+  useEffect(
+    function () {
+      if (userRating) countRef.current = countRef.current + 1;
+    },
+    [userRating],
+  );
 
   const {
     Title: title,
@@ -35,6 +45,7 @@ export default function MovieDetails({
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
+      countRatingDecisions: countRef.current,
     };
     onAddWatched(newWatchedMovie);
     onCloseMovie();
